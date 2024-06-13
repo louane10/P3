@@ -40,7 +40,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const categoriesMenu = document.getElementById('categories-menu');
         categoriesMenu.innerHTML = ''; 
     
-        const categories = ['Tous', 'Objets', 'Appartements', 'Hôtels & Restaurants'];
+        const categories = ['Tous', 'Objets', 'Appartements', 'Hotels & restaurants'];
         
         categories.forEach(category => {
           const button = document.createElement('button');
@@ -62,9 +62,10 @@ document.addEventListener('DOMContentLoaded', () => {
         if (category === 'Tous') {
           displayProjects(projects);
         } else {
-          const filteredProjects = projects.filter(project => project.category === category);
+          const filteredProjects = projects.filter(project => project.category.name === category);
           displayProjects(filteredProjects);
         }
+       
       }
     
       // catégorie active
