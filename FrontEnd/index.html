@@ -7,12 +7,16 @@
 	<link rel="preconnect" href="https://fonts.googleapis.com">
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 	<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Work+Sans&display=swap" rel="stylesheet">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css"
 	<meta name="description" content="">
 	<link rel="stylesheet" href="./assets/style.css">
+	
 </head>
 <body>
 	<script src="./script.js"></script>
-	<script src="login.js"></script>
+	<div id="edit-mode-bar" class="hidden">
+        <p><i class="fa-regular fa-pen-to-square"></i> Mode édition</p>
+    </div>
 <header>
 	<h1>Sophie Bluel <span>Architecte d'intérieur</span></h1>
 	<nav>
@@ -37,7 +41,12 @@
 		</article>
 	</section>
 	<section id="portfolio">
+		<div class="portfolio-header">
 			<h2>Mes Projets</h2>
+			<button id="edit-button" class="edit-button hidden">
+                <i class="fa-regular fa-pen-to-square"></i> modifier
+            </button>
+		</div>
 			<div id="categories-menu">
 			  <!--dynamiquement par JavaScript -->
 			</div>
@@ -63,6 +72,18 @@
 		</form>
 	</section>
 </main>
+<!-- Fenêtre modale -->
+<div id="modal" class="modal hidden">
+    <div class="modal-content">
+        <span class="close-button">&times;</span>
+        <h2>Galerie photo</h2>
+        <div class="modal-gallery">
+           
+        </div>
+        <div class="separator"></div>
+        <button id="add-photo-button">Ajouter une photo</button>
+    </div>
+</div>
 
 <footer>
 	<nav>
@@ -71,5 +92,6 @@
 		</ul>
 	</nav>
 </footer>
+<script defer src="connect.js"></script>
 </body>
 </html>
