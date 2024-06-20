@@ -19,7 +19,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function displayProjects(projects) {
       const gallery = document.querySelector('.gallery');
-      if (!gallery) return; // Vérifie si l'élément existe
+      if (!gallery) return; 
       gallery.innerHTML = ''; 
 
       projects.forEach(project => {
@@ -39,7 +39,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function generateCategoriesMenu(projects) {
       const categoriesMenu = document.getElementById('categories-menu');
-      if (!categoriesMenu) return; // Vérifie si l'élément existe
+      if (!categoriesMenu) return; 
       categoriesMenu.innerHTML = ''; 
 
       const categories = ['Tous', 'Objets', 'Appartements', 'Hotels & restaurants'];
@@ -79,48 +79,49 @@ document.addEventListener('DOMContentLoaded', () => {
   fetchProjects();
 });
 
-// Fenêtre modale
+// Fenêtre modale et déconnexion
 document.addEventListener('DOMContentLoaded', function() {
   const authToken = localStorage.getItem('authToken');
   const editModeBar = document.getElementById('edit-mode-bar');
   const modal = document.getElementById('modal');
   const closeButton = document.querySelector('.close-button');
   const editButton = document.getElementById('edit-button');
-  const loginButton = document.getElementById('login');
+  const loginLogoutButton = document.getElementById('login');
   const categoriesMenu = document.getElementById('categories-menu');
   const modalGallery = document.querySelector('.modal-gallery');
 
+  
   if (authToken) {
-      if (editModeBar) editModeBar.classList.remove('hidden');
-      if (editButton) editButton.classList.remove('hidden');
-      if (categoriesMenu) categoriesMenu.classList.add('hidden');
+      editModeBar.classList.remove('hidden');
+      editButton.classList.remove('hidden');
+      categoriesMenu.classList.add('hidden');
+      loginLogoutButton.textContent = 'Logout';
   }
-
-  if (loginButton) {
-      loginButton.addEventListener('click', function() {
-          window.location.href = 'login.html';
-      });
-  }
-
-  if (editButton) {
-      editButton.addEventListener('click', function() {
-          if (modal) modal.style.display = 'block';
-          loadGalleryImages();
-      });
-  }
-
-  if (closeButton) {
-      closeButton.addEventListener('click', function() {
-          if (modal) modal.style.display = 'none';
-      });
-  }
-
-  window.addEventListener('click', function(event) {
-      if (event.target === modal) {
-          modal.style.display = 'none';
-      }
+  
+  loginLogoutButton.addEventListener('click', function() {
+    if (authToken) {
+        localStorage.removeItem('authToken');
+        window.location.href = 'index.html'; 
+    } else {
+        window.location.href = 'index.html';
+    }
   });
 
+  editButton.addEventListener('click', function() {
+    modal.style.display = 'block';
+    loadGalleryImages();
+  });
+
+  closeButton.addEventListener('click', function() {
+    modal.style.display = 'none';
+  });
+
+  window.addEventListener('click', function(event) {
+    if (event.target === modal) {
+        modal.style.display = 'none';
+    }
+  });
+ 
   function loadGalleryImages() {
       const galleryImages = document.querySelectorAll('.gallery img');
       if (!modalGallery) return; 
@@ -131,7 +132,7 @@ document.addEventListener('DOMContentLoaded', function() {
           const img = document.createElement('img');
           img.src = image.src;
           const trashIcon = document.createElement('i');
-          trashIcon.classList.add('fa', 'fa-trash', 'trash-icon');
+          trashIcon.classList.add('fa-solid', 'fa-trash-can')
           trashIcon.addEventListener('click', function() {
            
               imageContainer.remove();
@@ -142,3 +143,4 @@ document.addEventListener('DOMContentLoaded', function() {
       });
   }
 });
+

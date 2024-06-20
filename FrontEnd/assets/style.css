@@ -312,6 +312,7 @@ footer nav ul {
     padding: 10px 0;
     position: fixed;
     top: 0;
+    left: 0;
     width: 100%;
     z-index: 1000;
     font-size: 1em;
@@ -341,6 +342,7 @@ footer nav ul {
     cursor: pointer;
     display: flex;
     align-items: center;
+    width: 10px;
 }
 
 .edit-button i {
@@ -404,13 +406,14 @@ footer nav ul {
     position: relative;
 }
 
-.trash-icon {
+.fa-trash-can {
     position: absolute;
     top: 30px;
     right: 10px;
     cursor: pointer;
     background-color: black;
    color: white;
+   padding:5px;
 }
 
 .separator {
