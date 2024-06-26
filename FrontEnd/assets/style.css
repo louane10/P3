@@ -134,7 +134,7 @@ li:hover {
 	margin-bottom: 50px;
   }
   
-  #categories-menu button {
+#categories-menu button {
 	background-color: transparent;
 	border: 2px solid #1D6154;
 	color: #1D6154;
@@ -146,8 +146,8 @@ li:hover {
 	font-weight: 700;
   }
   
-  #categories-menu button.active,
-  #categories-menu button:hover {
+#categories-menu button.active,
+#categories-menu button:hover {
 	background-color: #1D6154;
 	color: white;
   }
@@ -318,8 +318,8 @@ footer nav ul {
     font-size: 1em;
 }
 
-#edit-mode-bar.hidden {
-    display: none;
+.hidden {
+    display: none !important;
 }
 #edit-mode-bar i {
     color: white; 
@@ -442,3 +442,75 @@ footer nav ul {
     font-size: 24px;
 	padding-right: 10px;
 }
+
+
+/* Styles pour la nouvelle fenêtre modale */
+
+
+#add-photo-modal {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 630px;
+    height: 688px;
+    background: white;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+  }
+  
+  .upload-container {
+    width: 420px;
+    height: 169px;
+    background: lightblue;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    margin: 20px auto;
+  }
+  
+  .upload-box {
+    text-align: center;
+  }
+  
+  .upload-box i {
+    font-size: 50px;
+    color: gray;
+  }
+  
+  .upload-photo-button {
+    background: gray;
+    color: white;
+    border: none;
+    padding: 10px;
+    margin-top: 10px;
+    cursor: pointer;
+  }
+  
+  .input-field {
+    width: 420px;
+    height: 51px;
+    margin: 10px auto;
+    display: block;
+    padding: 10px;
+  }
+  
+  .separator {
+    width: 420px;
+    height: 1px;
+    background: gray;
+    margin: 20px auto;
+  }
+  
+  .submit-button {
+    background: gray;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    display: block;
+    margin: 20px auto;
+  }
+  

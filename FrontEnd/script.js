@@ -24,6 +24,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
       projects.forEach(project => {
           const figure = document.createElement('figure');
+          figure.setAttribute('id', project.id)
           const img = document.createElement('img');
           const figcaption = document.createElement('figcaption');
 
@@ -79,16 +80,23 @@ document.addEventListener('DOMContentLoaded', () => {
   fetchProjects();
 });
 
+
 // Fenêtre modale et déconnexion
 document.addEventListener('DOMContentLoaded', function() {
   const authToken = localStorage.getItem('authToken');
   const editModeBar = document.getElementById('edit-mode-bar');
   const modal = document.getElementById('modal');
+  const addPhotoModal = document.getElementById('add-photo-modal');
   const closeButton = document.querySelector('.close-button');
+  const backButton = document.querySelector('.back-button');
   const editButton = document.getElementById('edit-button');
+  const addPhotoButton = document.getElementById('add-photo-button');
   const loginLogoutButton = document.getElementById('login');
   const categoriesMenu = document.getElementById('categories-menu');
   const modalGallery = document.querySelector('.modal-gallery');
+  const uploadPhotoButton = document.getElementById('upload-photo-button');
+  const fileInput = document.getElementById('file-input');
+  const submitPhotoButton = document.getElementById('submit-photo-button');
 
   
   if (authToken) {
@@ -101,10 +109,7 @@ document.addEventListener('DOMContentLoaded', function() {
   loginLogoutButton.addEventListener('click', function() {
     if (authToken) {
         localStorage.removeItem('authToken');
-        window.location.href = 'index.html'; 
-    } else {
-        window.location.href = 'index.html';
-    }
+    } 
   });
 
   editButton.addEventListener('click', function() {
@@ -112,35 +117,144 @@ document.addEventListener('DOMContentLoaded', function() {
     loadGalleryImages();
   });
 
-  closeButton.addEventListener('click', function() {
-    modal.style.display = 'none';
+  closeButton.forEach(button => {
+    button.addEventListener('click', function() {
+      modal.style.display = 'none';
+      addPhotoModal.style.display = 'none';
+    });
   });
+
+  backButton.addEventListener('click', function() {
+    addPhotoModal.style.display = 'none';
+    modal.style.display = 'block';
+  });
+
 
   window.addEventListener('click', function(event) {
     if (event.target === modal) {
         modal.style.display = 'none';
+    } else if (event.target === addPhotoModal) {
+        addPhotoModal.style.display = 'none';
+      }
+  });
+
+  addPhotoButton.addEventListener('click', function() {
+    modal.style.display = 'none';
+    addPhotoModal.style.display = 'block';
+  });
+
+  uploadPhotoButton.addEventListener('click', function() {
+    fileInput.click(); 
+  });
+
+  submitPhotoButton.addEventListener('click', function() {
+    const title = document.getElementById('photo-title').value;
+    const category = document.getElementById('photo-category').value;
+    const file = fileInput.files[0];
+
+    if (!title || !category || !file) {
+      alert('Veuillez remplir tous les champs et sélectionner une photo.');
+      return;
     }
+
+    const formData = new FormData();
+    formData.append('title', title);
+    formData.append('category', category);
+    formData.append('image', file);
+
+    fetch('http://localhost:5678/api/works', {
+      method: 'POST',
+      headers: {
+        'Authorization': 'Bearer ' + authToken
+      },
+      body: formData
+    })
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        return response.json();
+      })
+      .then(data => {
+        loadGalleryImages();
+        modal.style.display = 'none';
+        addPhotoModal.style.display = 'none';
+        alert('Photo ajoutée avec succès.');
+      })
+      .catch(error => {
+        console.error('There was a problem with the fetch operation:', error);
+      });
   });
  
   function loadGalleryImages() {
-      const galleryImages = document.querySelectorAll('.gallery img');
-      if (!modalGallery) return; 
-      modalGallery.innerHTML = '';
-      galleryImages.forEach(image => {
-          const imageContainer = document.createElement('div');
-          imageContainer.classList.add('image-container');
-          const img = document.createElement('img');
-          img.src = image.src;
-          const trashIcon = document.createElement('i');
-          trashIcon.classList.add('fa-solid', 'fa-trash-can')
-          trashIcon.addEventListener('click', function() {
-           
-              imageContainer.remove();
-          });
-          imageContainer.appendChild(img);
-          imageContainer.appendChild(trashIcon);
-          modalGallery.appendChild(imageContainer);
-      });
+        fetch('http://localhost:5678/api/works')
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (!modalGallery) return; 
+                modalGallery.innerHTML = '';
+                
+                data.forEach(project => {
+                    const imageContainer = document.createElement('div');
+                    imageContainer.setAttribute('id', project.id)
+                    imageContainer.classList.add('image-container');
+                    const img = document.createElement('img');
+                    img.src = project.imageUrl;
+                    const trashIcon = document.createElement('i');
+                    trashIcon.classList.add('fa-solid', 'fa-trash-can')
+                    trashIcon.addEventListener('click', function() {
+                          fetch('http://localhost:5678/api/works/' + project.id, {
+                            method:'DELETE', 
+                            headers: {
+                                Authorization: "Bearer " + authToken
+                            }
+                          })
+                              .then(response => {
+                                  if (!response.ok) {
+                                      throw new Error('Network response was not ok');
+                                  }
+                                  if (response.status === 204) {
+                                    imageContainer.remove();
+                                    document.getElementById(project.id).remove();
+                                } else {
+                                    throw new Error('Network response was not ok');
+                                }
+                            })
+                              .catch(error => {
+                                  console.error('There was a problem with the fetch operation:', error);
+                              });
+                      
+                    });
+                    imageContainer.appendChild(img);
+                    imageContainer.appendChild(trashIcon);
+                    modalGallery.appendChild(imageContainer);
+
+                    const figure = document.createElement('figure');
+                    figure.setAttribute('id', project.id);
+                    const imgGallery = document.createElement('img');
+                    const figcaption = document.createElement('figcaption');
+          
+                    imgGallery.src = project.imageUrl;
+                    imgGallery.alt = project.title;
+                    figcaption.textContent = project.title;
+          
+                    figure.appendChild(imgGallery);
+                    figure.appendChild(figcaption);
+                    gallery.appendChild(figure);
+                });
+            })
+            .catch(error => {
+                console.error('There was a problem with the fetch operation:', error);
+            });
   }
+
+
+  
+
+
 });
 
