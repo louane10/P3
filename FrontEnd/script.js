@@ -87,7 +87,7 @@ document.addEventListener('DOMContentLoaded', function() {
   const editModeBar = document.getElementById('edit-mode-bar');
   const modal = document.getElementById('modal');
   const addPhotoModal = document.getElementById('add-photo-modal');
-  const closeButton = document.querySelector('.close-button');
+  const closeButtons = document.querySelectorAll('.close-button');
   const backButton = document.querySelector('.back-button');
   const editButton = document.getElementById('edit-button');
   const addPhotoButton = document.getElementById('add-photo-button');
@@ -109,6 +109,7 @@ document.addEventListener('DOMContentLoaded', function() {
   loginLogoutButton.addEventListener('click', function() {
     if (authToken) {
         localStorage.removeItem('authToken');
+        location.reload();
     } 
   });
 
@@ -117,7 +118,7 @@ document.addEventListener('DOMContentLoaded', function() {
     loadGalleryImages();
   });
 
-  closeButton.forEach(button => {
+  closeButtons.forEach(button => {
     button.addEventListener('click', function() {
       modal.style.display = 'none';
       addPhotoModal.style.display = 'none';
@@ -219,7 +220,12 @@ document.addEventListener('DOMContentLoaded', function() {
                                   }
                                   if (response.status === 204) {
                                     imageContainer.remove();
-                                    document.getElementById(project.id).remove();
+                                    if (gallery) {
+                                      const projectToRemove = document.getElementById(project.id);
+                                      if (projectToRemove) {
+                                        projectToRemove.remove();
+                                      }
+                                    }
                                 } else {
                                     throw new Error('Network response was not ok');
                                 }
@@ -232,7 +238,8 @@ document.addEventListener('DOMContentLoaded', function() {
                     imageContainer.appendChild(img);
                     imageContainer.appendChild(trashIcon);
                     modalGallery.appendChild(imageContainer);
-
+                    
+                    if (gallery) {
                     const figure = document.createElement('figure');
                     figure.setAttribute('id', project.id);
                     const imgGallery = document.createElement('img');
@@ -245,6 +252,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     figure.appendChild(imgGallery);
                     figure.appendChild(figcaption);
                     gallery.appendChild(figure);
+                    }
                 });
             })
             .catch(error => {
@@ -252,8 +260,7 @@ document.addEventListener('DOMContentLoaded', function() {
             });
   }
 
-
-  
+  loadGalleryImages();
 
 
 });
