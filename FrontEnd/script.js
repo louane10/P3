@@ -114,20 +114,19 @@ document.addEventListener('DOMContentLoaded', function() {
   });
 
   editButton.addEventListener('click', function() {
-    modal.style.display = 'block';
+    modal.classList.remove('hidden');
     loadGalleryImages();
   });
 
   closeButtons.forEach(button => {
     button.addEventListener('click', function() {
-      modal.style.display = 'none';
-      addPhotoModal.style.display = 'none';
+      modal.classList.add('hidden');
     });
   });
 
   backButton.addEventListener('click', function() {
-    addPhotoModal.style.display = 'none';
-    modal.style.display = 'block';
+    document.getElementById('modale-suppression').classList.remove('hidden');
+    document.getElementById('modale-ajout').classList.add('hidden');
   });
 
 
@@ -140,8 +139,8 @@ document.addEventListener('DOMContentLoaded', function() {
   });
 
   addPhotoButton.addEventListener('click', function() {
-    modal.style.display = 'none';
-    addPhotoModal.style.display = 'block';
+    document.getElementById('modale-suppression').classList.add('hidden');
+    document.getElementById('modale-ajout').classList.remove('hidden');
   });
 
   uploadPhotoButton.addEventListener('click', function() {
@@ -178,8 +177,7 @@ document.addEventListener('DOMContentLoaded', function() {
       })
       .then(data => {
         loadGalleryImages();
-        modal.style.display = 'none';
-        addPhotoModal.style.display = 'none';
+        modal.classList.add('hidden');
         alert('Photo ajoutée avec succès.');
       })
       .catch(error => {
@@ -188,6 +186,7 @@ document.addEventListener('DOMContentLoaded', function() {
   });
  
   function loadGalleryImages() {
+    const gallery = document.querySelector('.gallery');
         fetch('http://localhost:5678/api/works')
             .then(response => {
                 if (!response.ok) {
@@ -198,6 +197,9 @@ document.addEventListener('DOMContentLoaded', function() {
             .then(data => {
                 if (!modalGallery) return; 
                 modalGallery.innerHTML = '';
+                if (gallery) {
+                  gallery.innerHTML = '';
+                }
                 
                 data.forEach(project => {
                     const imageContainer = document.createElement('div');
