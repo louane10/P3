@@ -85,7 +85,7 @@ document.addEventListener('DOMContentLoaded', () => {
 document.addEventListener('DOMContentLoaded', function() {
   const authToken = localStorage.getItem('authToken');
   const editModeBar = document.getElementById('edit-mode-bar');
-  const modal = document.getElementById('modal');
+  const modal = document.querySelector('.modal');
   const addPhotoModal = document.getElementById('add-photo-modal');
   const closeButtons = document.querySelectorAll('.close-button');
   const backButton = document.querySelector('.back-button');

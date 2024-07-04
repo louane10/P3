@@ -82,21 +82,8 @@
 
 <!-- Fenêtre modale -->
 
-<div id="modal" class="hidden">
-    <div class="modal-content">
-        <span class="close-button">&times;</span>
-        <h2>Galerie photo</h2>
-        <div class="modal-gallery">
-        </div>
-        <div class="separator"></div>
-        <button id="add-photo-button">Ajouter une photo</button>
-    </div>
-</div>
-
-<!-- Deuxième fenêtre modale -->
-
-<div id="modal" class="hidden">
-	<div id="modale-suppression">
+<div class="modal hidden">
+	<div id="modale-suppression" class="modal-content">
 	  <!-- Contenu de la modale de suppression -->
 	  <div class="modal-header">
 		<span class="close-button">&times;</span>
@@ -106,11 +93,12 @@
 	  </div>
 	  <button id="add-photo-button">Ajouter une photo</button>
 	</div>
-	<div id="modale-ajout" class="hidden">
+	<div id="modale-ajout" class="hidden modal-content">
 	  <!-- Contenu de la modale d'ajout -->
 	  <div class="modal-header">
 		<span class="back-button">&larr;</span>
 		<span class="close-button">&times;</span>
+		<h2>Ajout Photo</h2>
 	  </div>
 	  <div class="add-photo-form">
 		<div class="photo-upload-container">

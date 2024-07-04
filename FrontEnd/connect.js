@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded', function() {
     const authToken = localStorage.getItem('authToken');
     const editModeBar = document.getElementById('edit-mode-bar');
-    const modal = document.getElementById('modal');
+    const modal = document.querySelector('.modal');
     const addPhotoButton = document.getElementById('add-photo-button');
     const closeButton = document.querySelector('.close-button');
     const editButton = document.getElementById('edit-button');

@@ -354,7 +354,6 @@ footer nav ul {
 
 
 .modal {
-    display: none;
     position: fixed;
     z-index: 1000;
     left: 0;
@@ -447,70 +446,47 @@ footer nav ul {
 /* Styles pour la nouvelle fenêtre modale */
 
 
-#add-photo-modal {
-    display: block;
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 630px;
-    height: 688px;
-    background: white;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    z-index: 1000;
-  }
-  
-  .upload-container {
-    width: 420px;
-    height: 169px;
-    background: lightblue;
+.add-photo-form {
     display: flex;
-    justify-content: center;
-    align-items: center;
     flex-direction: column;
-    margin: 20px auto;
-  }
-  
-  .upload-box {
-    text-align: center;
-  }
-  
-  .upload-box i {
-    font-size: 50px;
-    color: gray;
-  }
-  
-  .upload-photo-button {
-    background: gray;
-    color: white;
-    border: none;
-    padding: 10px;
-    margin-top: 10px;
-    cursor: pointer;
-  }
-  
-  .input-field {
+    align-items: center;
+}
+
+.photo-upload-container {
     width: 420px;
-    height: 51px;
-    margin: 10px auto;
-    display: block;
+    background-color:aliceblue; 
     padding: 10px;
-  }
-  
-  .separator {
-    width: 420px;
-    height: 1px;
-    background: gray;
-    margin: 20px auto;
-  }
-  
-  .submit-button {
-    background: gray;
-    color: white;
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.upload-placeholder i {
+    display: flex;
+    flex-direction: column;
+    width: 76px;
+    height: 76px;
+    color: #B9C5CC;
+    font-size: 76px;
+    padding-top: 25px;
+}
+
+#upload-photo-button {
+    display: flex;
+    flex-direction: column;
+    width: 173px;
+    height: 36px;
+    background-color: #B9C5CC;
+    border-radius: 50px;
     border: none;
-    padding: 10px 20px;
-    cursor: pointer;
-    display: block;
-    margin: 20px auto;
-  }
-  
+    align-items: center;
+   padding-top: 15px;
+   text-align: center;
+   color: #1D6154;   
+}
+
+.upload-placeholder p {
+    font-size: x-small;
+    align-items: center;
+}
