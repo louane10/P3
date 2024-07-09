@@ -1,5 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
 
+// Fonction pour récupérer les projets
+
   function fetchProjects() {
       fetch('http://localhost:5678/api/works')
           .then(response => {
@@ -16,6 +18,8 @@ document.addEventListener('DOMContentLoaded', () => {
               console.error('There was a problem with the fetch operation:', error);
           });
   }
+
+ // Fonction pour afficher les projets dans la galerie
 
   function displayProjects(projects) {
       const gallery = document.querySelector('.gallery');
@@ -38,6 +42,8 @@ document.addEventListener('DOMContentLoaded', () => {
       });
   }
 
+   // Fonction pour générer le menu des catégories
+
   function generateCategoriesMenu(projects) {
       const categoriesMenu = document.getElementById('categories-menu');
       if (!categoriesMenu) return; 
@@ -55,10 +61,13 @@ document.addEventListener('DOMContentLoaded', () => {
           categoriesMenu.appendChild(button);
       });
 
-      // "Tous"
+     // "Tous"
+
       const firstButton = categoriesMenu.querySelector('button');
       if (firstButton) firstButton.classList.add('active');
   }
+
+  // Fonction pour filtrer les projets par catégorie
 
   function filterProjects(category, projects) {
       if (category === 'Tous') {
@@ -68,6 +77,8 @@ document.addEventListener('DOMContentLoaded', () => {
           displayProjects(filteredProjects);
       }
   }
+
+   // Fonction pour marquer la catégorie active
 
   function setActiveCategory(activeButton) {
       const buttons = document.querySelectorAll('#categories-menu button');
@@ -98,6 +109,7 @@ document.addEventListener('DOMContentLoaded', function() {
   const fileInput = document.getElementById('file-input');
   const submitPhotoButton = document.getElementById('submit-photo-button');
 
+  // Afficher les éléments en mode édition si un token d'authentification est présent
   
   if (authToken) {
       editModeBar.classList.remove('hidden');
@@ -112,6 +124,8 @@ document.addEventListener('DOMContentLoaded', function() {
         location.reload();
     } 
   });
+
+ // Ouvrir et fermer la fenêtre modale en mode édition
 
   editButton.addEventListener('click', function() {
     modal.classList.remove('hidden');
@@ -185,6 +199,8 @@ document.addEventListener('DOMContentLoaded', function() {
       });
   });
  
+// Fonction pour charger et afficher les images dans la galerie
+
   function loadGalleryImages() {
     const gallery = document.querySelector('.gallery');
         fetch('http://localhost:5678/api/works')
@@ -265,5 +281,28 @@ document.addEventListener('DOMContentLoaded', function() {
   loadGalleryImages();
 
 
+//Affichage de l'image dans fileinput
+
+document.getElementById('upload-photo-button').addEventListener('click', function() {
+  document.getElementById('file-input').click();
 });
+
+document.getElementById('file-input').addEventListener('change', function(event) {
+  const file = event.target.files[0];
+  if (file) {
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      const photoPreview = document.getElementById('photo-preview');
+      photoPreview.src = e.target.result;
+      photoPreview.classList.remove('hidden');
+      document.querySelector('.upload-placeholder').classList.add('hidden');
+      document.getElementById('upload-photo-button').classList.add('hidden');
+      document.querySelector('.photo-upload-container p').classList.add('hidden');
+    }
+    reader.readAsDataURL(file);
+  }
+});
+
+});
+
 
