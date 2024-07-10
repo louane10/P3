@@ -157,9 +157,7 @@ document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('modale-ajout').classList.remove('hidden');
   });
 
-  uploadPhotoButton.addEventListener('click', function() {
-    fileInput.click(); 
-  });
+
 
   submitPhotoButton.addEventListener('click', function() {
     const title = document.getElementById('photo-title').value;
@@ -286,7 +284,6 @@ document.addEventListener('DOMContentLoaded', function() {
 document.getElementById('upload-photo-button').addEventListener('click', function() {
   document.getElementById('file-input').click();
 });
-
 document.getElementById('file-input').addEventListener('change', function(event) {
   const file = event.target.files[0];
   if (file) {
@@ -305,4 +302,20 @@ document.getElementById('file-input').addEventListener('change', function(event)
 
 });
 
+// Essai incomplet de l'envoi du projet à l'API
+
+fetch('http://localhost:5678/api/works/', {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+  },
+  body: JSON.stringify(projet),
+})
+  .then(response => response.json())
+  .then(data => {
+    console.log('Réponse de l\'API :', data);
+  })
+  .catch(error => {
+    console.error('Erreur lors de l\'envoi de la demande :', error);
+  });
 
