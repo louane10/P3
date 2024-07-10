@@ -158,43 +158,33 @@ document.addEventListener('DOMContentLoaded', function() {
   });
 
 
+  // Essai incomplet de l'envoi du projet à l'API
 
-  submitPhotoButton.addEventListener('click', function() {
-    const title = document.getElementById('photo-title').value;
-    const category = document.getElementById('photo-category').value;
-    const file = fileInput.files[0];
-
-    if (!title || !category || !file) {
-      alert('Veuillez remplir tous les champs et sélectionner une photo.');
-      return;
-    }
-
-    const formData = new FormData();
-    formData.append('title', title);
-    formData.append('category', category);
-    formData.append('image', file);
+  
+    submitPhotoButton.addEventListener('click', (event) => {
+      event.preventDefault();
+  
+      const formData = new FormData();
+      formData.append('file', fileInput.files[0]);
+      formData.append('title', photoTitle.value);
+      formData.append('category', photoCategory.value);
 
     fetch('http://localhost:5678/api/works', {
       method: 'POST',
       headers: {
         'Authorization': 'Bearer ' + authToken
       },
-      body: formData
+      body: formData,
     })
-      .then(response => {
-        if (!response.ok) {
-          throw new Error('Network response was not ok');
-        }
-        return response.json();
-      })
-      .then(data => {
-        loadGalleryImages();
-        modal.classList.add('hidden');
-        alert('Photo ajoutée avec succès.');
-      })
-      .catch(error => {
-        console.error('There was a problem with the fetch operation:', error);
-      });
+    .then(data => {
+      console.log('Réponse de l\'API :', data);
+      alert('Photo ajoutée avec succès.');
+      document.querySelector('.modal').classList.add('hidden');
+      loadGalleryImages(); 
+    })
+    .catch(error => {
+      console.error('Erreur lors de l\'envoi de la demande :', error);
+    });
   });
  
 // Fonction pour charger et afficher les images dans la galerie
@@ -255,7 +245,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     imageContainer.appendChild(trashIcon);
                     modalGallery.appendChild(imageContainer);
                     
-                    if (gallery) {
+                    data.forEach(project => {
                     const figure = document.createElement('figure');
                     figure.setAttribute('id', project.id);
                     const imgGallery = document.createElement('img');
@@ -268,7 +258,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     figure.appendChild(imgGallery);
                     figure.appendChild(figcaption);
                     gallery.appendChild(figure);
-                    }
+                    })
                 });
             })
             .catch(error => {
@@ -302,20 +292,7 @@ document.getElementById('file-input').addEventListener('change', function(event)
 
 });
 
-// Essai incomplet de l'envoi du projet à l'API
 
-fetch('http://localhost:5678/api/works/', {
-  method: 'POST',
-  headers: {
-    'Content-Type': 'application/json',
-  },
-  body: JSON.stringify(projet),
-})
-  .then(response => response.json())
-  .then(data => {
-    console.log('Réponse de l\'API :', data);
-  })
-  .catch(error => {
-    console.error('Erreur lors de l\'envoi de la demande :', error);
-  });
+
+
 
