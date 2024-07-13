@@ -108,6 +108,8 @@ document.addEventListener('DOMContentLoaded', function() {
   const uploadPhotoButton = document.getElementById('upload-photo-button');
   const fileInput = document.getElementById('file-input');
   const submitPhotoButton = document.getElementById('submit-photo-button');
+  const photoTitle = document.getElementById('photo-title');
+  const photoCategory = document.getElementById('photo-category');
 
   // Afficher les éléments en mode édition si un token d'authentification est présent
   
@@ -165,7 +167,7 @@ document.addEventListener('DOMContentLoaded', function() {
       event.preventDefault();
   
       const formData = new FormData();
-      formData.append('file', fileInput.files[0]);
+      formData.append('image', fileInput.files[0]);
       formData.append('title', photoTitle.value);
       formData.append('category', photoCategory.value);
 
