@@ -111,6 +111,7 @@ document.addEventListener('DOMContentLoaded', function() {
   const photoTitle = document.getElementById('photo-title');
   const photoCategory = document.getElementById('photo-category');
 
+
   // Afficher les éléments en mode édition si un token d'authentification est présent
   
   if (authToken) {
@@ -126,6 +127,86 @@ document.addEventListener('DOMContentLoaded', function() {
         location.reload();
     } 
   });
+
+
+
+
+ //Creation modale
+
+  function createSuppressionModal() {
+    const modalContainer = document.getElementById('modal-container');
+    const modal = document.createElement('div');
+    modal.classList.add('modal', 'hidden');
+
+    const modalContent = `
+        <div id="modale-suppression" class="modal-content">
+            <div class="modal-header">
+                <span class="close-button">&times;</span>
+            </div>
+            <h2>Galerie photo</h2>
+            <div class="modal-gallery">
+                <!-- Galerie des projets -->
+            </div>
+            <hr>
+            <button id="add-photo-button">Ajouter une photo</button>
+        </div>
+    `;
+
+    modal.innerHTML = modalContent;
+    modalContainer.appendChild(modal);
+}
+  
+    // Création de la modale d'ajout
+    function createAjoutModal() {
+      const modalContainer = document.getElementById('modal-container');
+      const modal = document.createElement('div');
+      modal.classList.add('modal', 'hidden');
+      modal.setAttribute('id', 'ajout-modal');
+
+      const modalContent = `
+          <div id="modale-ajout" class="modal-content hidden">
+              <div class="modal-header">
+                  <span class="back-button">
+                      <i class="fa-solid fa-arrow-left"></i>
+                  </span>
+                  <span class="close-button">&times;</span>
+                  <h2>Ajout Photo</h2>
+              </div>
+              <div class="add-photo-form">
+                  <div class="photo-upload-container">
+                      <div class="upload-placeholder">
+                          <i class="fa-regular fa-image"></i>
+                      </div>
+                      <button id="upload-photo-button">+ Ajouter photo</button>
+                      <p>jpg. png : 4mo max</p>
+                      <input type="file" id="file-input" class="hidden">
+                      <img id="photo-preview" class="hidden" alt="Photo preview">
+                  </div>
+                  <div class="photo-details">
+                      <label for="photo-title">Titre</label>
+                      <input type="text" id="photo-title">
+                      <label for="photo-category">Catégorie</label>
+                      <select id="photo-category">
+                          <option value=""></option>
+                          <option value="hotels et restaurants">Hôtels & Restaurants</option>
+                          <option value="appartements">Appartements</option>
+                          <option value="objets">Objets</option>
+                      </select>
+                  </div>
+                  <hr>
+                  <button id="submit-photo-button">Valider</button>
+              </div>
+          </div>
+      `;
+
+      modal.innerHTML = modalContent;
+      modalContainer.appendChild(modal);
+  }
+
+    createSuppressionModal();
+    createAjoutModal();
+
+
 
  // Ouvrir et fermer la fenêtre modale en mode édition
 
@@ -160,7 +241,99 @@ document.addEventListener('DOMContentLoaded', function() {
   });
 
 
-  // Essai incomplet de l'envoi du projet à l'API
+  document.querySelector('.modal');
+  document.getElementById('add-photo-button');
+
+  if (editButton && modal) {
+      editButton.addEventListener('click', function() {
+          modal.classList.remove('hidden');
+          loadGalleryImages();
+      });
+  }
+
+  if (closeButtons) {
+      closeButtons.forEach(button => {
+          button.addEventListener('click', function() {
+              modal.classList.add('hidden');
+          });
+      });
+  }
+
+  if (backButton) {
+      backButton.addEventListener('click', function() {
+          const suppressionModal = document.getElementById('modale-suppression');
+          const ajoutModal = document.getElementById('modale-ajout');
+          if (suppressionModal && ajoutModal) {
+              suppressionModal.classList.remove('hidden');
+              ajoutModal.classList.add('hidden');
+          }
+      });
+  }
+
+  window.addEventListener('click', function(event) {
+      if (event.target === modal) {
+          modal.style.display = 'none';
+      } else if (event.target === addPhotoModal) {
+          addPhotoModal.style.display = 'none';
+      }
+  });
+
+  if (addPhotoButton) {
+    addPhotoButton.addEventListener('click', function() {
+        const suppressionModal = document.getElementById('modale-suppression');
+        const ajoutModal = document.getElementById('modale-ajout');
+        if (suppressionModal && ajoutModal) {
+            suppressionModal.classList.add('hidden');
+            ajoutModal.classList.remove('hidden');
+        }
+    });
+}
+
+if (submitPhotoButton) {
+    submitPhotoButton.addEventListener('click', (event) => {
+        event.preventDefault();
+
+        const formData = new FormData();
+        formData.append('image', fileInput.files[0]);
+        formData.append('title', photoTitle.value);
+        formData.append('category', photoCategory.value);
+
+        fetch('http://localhost:5678/api/works', {
+            method: 'POST',
+            headers: {
+                'Authorization': 'Bearer ' + authToken
+            },
+            body: formData,
+        })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Success:', data);
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+            });
+    });
+}
+
+if (fileInput) {
+    fileInput.addEventListener('change', () => {
+        const file = fileInput.files[0];
+        const reader = new FileReader();
+
+        reader.onload = (e) => {
+            const photoPreview = document.getElementById('photo-preview');
+            photoPreview.src = e.target.result;
+            photoPreview.classList.remove('hidden');
+        };
+
+        if (file) {
+            reader.readAsDataURL(file);
+        }
+    });
+}
+});
+
+  // Essai de l'envoi du projet à l'API
 
   
     submitPhotoButton.addEventListener('click', (event) => {
@@ -292,7 +465,7 @@ document.getElementById('file-input').addEventListener('change', function(event)
   }
 });
 
-});
+
 
 
 
