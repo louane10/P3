@@ -82,48 +82,9 @@
 
 <!-- Fenêtre modale -->
 
-<div id="modal-container"></div>
-
-<div class="modal hidden">
+<div id="modal-container"><div class="modal hidden"></div></div>
 
 
-	<div id="modale-ajout" class="hidden modal-content">
-	  <!-- Contenu de la modale d'ajout -->
-	  <div class="modal-header">
-		<span class="back-button">
-			<i class="fa-solid fa-arrow-left"></i>
-		</span>
-		<span class="close-button">&times;</span>
-		<h2>Ajout Photo</h2>
-	  </div>
-	  <div class="add-photo-form">
-		<div class="photo-upload-container">
-		  <div class="upload-placeholder">
-			<i class="fa-regular fa-image"></i>
-		  </div>
-			<button id="upload-photo-button">+ Ajouter photo</button>
-			<p>jpg. png : 4mo max</p>
-			<input type="file" id="file-input" class="hidden">
-			<img id="photo-preview" class="hidden" alt="Photo preview">
-		</div>
-		<div class="photo-details">
-		  <label for="photo-title">Titre</label>
-		  <input type="text" id="photo-title">
-		  <label for="photo-category">Catégorie</label>
-		  <select type="text" id="photo-category">
-			<option value=""></option>
-			<option value="hotels et restaurants">Hôtels & Restaurants</option>
-			<option value="appartemenets">Appartements</option>
-			<option value="objets">Objets</option>
-		  </select>
-		</div>
-		<hr>
-		<form>
-		<button id="submit-photo-button">Valider</button>
-    	</form>
-	  </div>
-	</div>
-  </div>
   
 
 <script defer src="connect.js"></script>

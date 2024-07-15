@@ -130,83 +130,159 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 
+// Modale de suppression
 
- //Creation modale
+function createSuppressionModal() {
+  const modalContainer = document.getElementById('modal-container');
+  const modal = document.createElement('div');
+  modal.classList.add('modal', 'hidden');
 
-  function createSuppressionModal() {
-    const modalContainer = document.getElementById('modal-container');
-    const modal = document.createElement('div');
-    modal.classList.add('modal', 'hidden');
+  const modalContent = document.createElement('div');
+  modalContent.classList.add('modal-content');
+  modalContent.setAttribute('id', 'modale-suppression');
 
-    const modalContent = `
-        <div id="modale-suppression" class="modal-content">
-            <div class="modal-header">
-                <span class="close-button">&times;</span>
-            </div>
-            <h2>Galerie photo</h2>
-            <div class="modal-gallery">
-                <!-- Galerie des projets -->
-            </div>
-            <hr>
-            <button id="add-photo-button">Ajouter une photo</button>
-        </div>
-    `;
+  const modalHeader = document.createElement('div');
+  modalHeader.classList.add('modal-header');
 
-    modal.innerHTML = modalContent;
-    modalContainer.appendChild(modal);
+  const closeButton = document.createElement('span');
+  closeButton.classList.add('close-button');
+  closeButton.innerHTML = '&times;';
+
+  const title = document.createElement('h2');
+  title.textContent = 'Galerie photo';
+
+  const modalGallery = document.createElement('div');
+  modalGallery.classList.add('modal-gallery');
+
+  const hr = document.createElement('hr');
+
+  const addPhotoButton = document.createElement('button');
+  addPhotoButton.setAttribute('id', 'add-photo-button');
+  addPhotoButton.textContent = 'Ajouter une photo';
+
+  modalHeader.appendChild(closeButton);
+  modalContent.appendChild(modalHeader);
+  modalContent.appendChild(title);
+  modalContent.appendChild(modalGallery);
+  modalContent.appendChild(hr);
+  modalContent.appendChild(addPhotoButton);
+  modal.appendChild(modalContent);
+  modalContainer.appendChild(modal);
+
+  closeButton.addEventListener('click', function() {
+      modal.classList.add('hidden');
+  });
+
+  addPhotoButton.addEventListener('click', function() {
+      document.getElementById('modale-suppression').classList.add('hidden');
+      document.getElementById('modale-ajout').classList.remove('hidden');
+  });
 }
-  
-    // Création de la modale d'ajout
-    function createAjoutModal() {
-      const modalContainer = document.getElementById('modal-container');
-      const modal = document.createElement('div');
-      modal.classList.add('modal', 'hidden');
-      modal.setAttribute('id', 'ajout-modal');
 
-      const modalContent = `
-          <div id="modale-ajout" class="modal-content hidden">
-              <div class="modal-header">
-                  <span class="back-button">
-                      <i class="fa-solid fa-arrow-left"></i>
-                  </span>
-                  <span class="close-button">&times;</span>
-                  <h2>Ajout Photo</h2>
-              </div>
-              <div class="add-photo-form">
-                  <div class="photo-upload-container">
-                      <div class="upload-placeholder">
-                          <i class="fa-regular fa-image"></i>
-                      </div>
-                      <button id="upload-photo-button">+ Ajouter photo</button>
-                      <p>jpg. png : 4mo max</p>
-                      <input type="file" id="file-input" class="hidden">
-                      <img id="photo-preview" class="hidden" alt="Photo preview">
-                  </div>
-                  <div class="photo-details">
-                      <label for="photo-title">Titre</label>
-                      <input type="text" id="photo-title">
-                      <label for="photo-category">Catégorie</label>
-                      <select id="photo-category">
-                          <option value=""></option>
-                          <option value="hotels et restaurants">Hôtels & Restaurants</option>
-                          <option value="appartements">Appartements</option>
-                          <option value="objets">Objets</option>
-                      </select>
-                  </div>
-                  <hr>
-                  <button id="submit-photo-button">Valider</button>
-              </div>
-          </div>
-      `;
-
-      modal.innerHTML = modalContent;
-      modalContainer.appendChild(modal);
-  }
-
-    createSuppressionModal();
-    createAjoutModal();
+createSuppressionModal();
 
 
+//Modale d'ajout
+
+function createAjoutModal() {
+  const modalContainer = document.getElementById('modal-container');
+  const modal = document.createElement('div');
+  modal.classList.add('modal', 'hidden');
+  modal.setAttribute('id', 'ajout-modal');
+
+  const modalContent = document.createElement('div');
+  modalContent.classList.add('modal-content');
+  modalContent.setAttribute('id', 'modale-ajout');
+
+  const modalHeader = document.createElement('div');
+  modalHeader.classList.add('modal-header');
+
+  const backButton = document.createElement('span');
+  backButton.classList.add('back-button');
+  backButton.innerHTML = '<i class="fa-solid fa-arrow-left"></i>';
+
+  const closeButton = document.createElement('span');
+  closeButton.classList.add('close-button');
+  closeButton.innerHTML = '&times;';
+
+  const title = document.createElement('h2');
+  title.textContent = 'Ajout Photo';
+
+  const addPhotoForm = document.createElement('div');
+  addPhotoForm.classList.add('add-photo-form');
+
+  const photoUploadContainer = document.createElement('div');
+  photoUploadContainer.classList.add('photo-upload-container');
+
+  const uploadPlaceholder = document.createElement('div');
+  uploadPlaceholder.classList.add('upload-placeholder');
+  uploadPlaceholder.innerHTML = '<i class="fa-regular fa-image"></i>';
+
+  const uploadPhotoButton = document.createElement('button');
+  uploadPhotoButton.setAttribute('id', 'upload-photo-button');
+  uploadPhotoButton.textContent = '+ Ajouter photo';
+
+  const infoText = document.createElement('p');
+  infoText.textContent = 'jpg. png : 4mo max';
+
+  const fileInput = document.createElement('input');
+  fileInput.setAttribute('type', 'file');
+  fileInput.setAttribute('id', 'file-input');
+  fileInput.classList.add('hidden');
+
+  const photoPreview = document.createElement('img');
+  photoPreview.setAttribute('id', 'photo-preview');
+  photoPreview.classList.add('hidden');
+  photoPreview.setAttribute('alt', 'Photo preview');
+
+  const photoDetails = document.createElement('div');
+  photoDetails.classList.add('photo-details');
+
+  const titleLabel = document.createElement('label');
+  titleLabel.setAttribute('for', 'photo-title');
+  titleLabel.textContent = 'Titre';
+
+  const photoTitle = document.createElement('input');
+  photoTitle.setAttribute('type', 'text');
+  photoTitle.setAttribute('id', 'photo-title');
+
+  const categoryLabel = document.createElement('label');
+  categoryLabel.setAttribute('for', 'photo-category');
+  categoryLabel.textContent = 'Catégorie';
+
+  const photoCategory = document.createElement('select');
+  photoCategory.setAttribute('id', 'photo-category');
+  const option1 = document.createElement('option');
+  option1.setAttribute('value', '');
+  const option2 = document.createElement('option');
+  option2.setAttribute('value', 'hotels et restaurants');
+  option2.textContent = 'Hôtels & Restaurants';
+  const option3 = document.createElement('option');
+  option3.setAttribute('value', 'appartements');
+  option3.textContent = 'Appartements';
+  const option4 = document.createElement('option');
+  option4.setAttribute('value', 'objets');
+  option4.textContent = 'Objets';
+  photoCategory.append(option1, option2, option3, option4);
+
+  const hr = document.createElement('hr');
+
+  const submitPhotoButton = document.createElement('button');
+  submitPhotoButton.setAttribute('id', 'submit-photo-button');
+  submitPhotoButton.textContent = 'Valider';
+
+  photoUploadContainer.append(uploadPlaceholder, uploadPhotoButton, infoText, fileInput, photoPreview);
+  photoDetails.append(titleLabel, photoTitle, categoryLabel, photoCategory);
+  addPhotoForm.append(photoUploadContainer, photoDetails, hr, submitPhotoButton);
+  modalHeader.append(backButton, closeButton, title);
+  modalContent.append(modalHeader, addPhotoForm);
+  modal.append(modalContent);
+  modalContainer.append(modal);
+
+  uploadPhotoButton.addEventListener('click', function() {
+    fileInput.click();
+  });
+}
 
  // Ouvrir et fermer la fenêtre modale en mode édition
 
@@ -241,99 +317,10 @@ document.addEventListener('DOMContentLoaded', function() {
   });
 
 
-  document.querySelector('.modal');
-  document.getElementById('add-photo-button');
 
-  if (editButton && modal) {
-      editButton.addEventListener('click', function() {
-          modal.classList.remove('hidden');
-          loadGalleryImages();
-      });
-  }
+  
 
-  if (closeButtons) {
-      closeButtons.forEach(button => {
-          button.addEventListener('click', function() {
-              modal.classList.add('hidden');
-          });
-      });
-  }
-
-  if (backButton) {
-      backButton.addEventListener('click', function() {
-          const suppressionModal = document.getElementById('modale-suppression');
-          const ajoutModal = document.getElementById('modale-ajout');
-          if (suppressionModal && ajoutModal) {
-              suppressionModal.classList.remove('hidden');
-              ajoutModal.classList.add('hidden');
-          }
-      });
-  }
-
-  window.addEventListener('click', function(event) {
-      if (event.target === modal) {
-          modal.style.display = 'none';
-      } else if (event.target === addPhotoModal) {
-          addPhotoModal.style.display = 'none';
-      }
-  });
-
-  if (addPhotoButton) {
-    addPhotoButton.addEventListener('click', function() {
-        const suppressionModal = document.getElementById('modale-suppression');
-        const ajoutModal = document.getElementById('modale-ajout');
-        if (suppressionModal && ajoutModal) {
-            suppressionModal.classList.add('hidden');
-            ajoutModal.classList.remove('hidden');
-        }
-    });
-}
-
-if (submitPhotoButton) {
-    submitPhotoButton.addEventListener('click', (event) => {
-        event.preventDefault();
-
-        const formData = new FormData();
-        formData.append('image', fileInput.files[0]);
-        formData.append('title', photoTitle.value);
-        formData.append('category', photoCategory.value);
-
-        fetch('http://localhost:5678/api/works', {
-            method: 'POST',
-            headers: {
-                'Authorization': 'Bearer ' + authToken
-            },
-            body: formData,
-        })
-            .then(response => response.json())
-            .then(data => {
-                console.log('Success:', data);
-            })
-            .catch((error) => {
-                console.error('Error:', error);
-            });
-    });
-}
-
-if (fileInput) {
-    fileInput.addEventListener('change', () => {
-        const file = fileInput.files[0];
-        const reader = new FileReader();
-
-        reader.onload = (e) => {
-            const photoPreview = document.getElementById('photo-preview');
-            photoPreview.src = e.target.result;
-            photoPreview.classList.remove('hidden');
-        };
-
-        if (file) {
-            reader.readAsDataURL(file);
-        }
-    });
-}
-});
-
-  // Essai de l'envoi du projet à l'API
+  // Essai incomplet de l'envoi du projet à l'API
 
   
     submitPhotoButton.addEventListener('click', (event) => {
@@ -465,9 +452,4 @@ document.getElementById('file-input').addEventListener('change', function(event)
   }
 });
 
-
-
-
-
-
-
+});
