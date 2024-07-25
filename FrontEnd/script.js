@@ -11,7 +11,9 @@ document.addEventListener("DOMContentLoaded", () => {
       })
       .then((data) => {
         displayProjects(data);
+        fetchCategories(data);
         generateCategoriesMenu(data);
+        
       })
       .catch((error) => {
         console.error("There was a problem with the fetch operation:", error);
@@ -24,7 +26,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const gallery = document.querySelector(".gallery");
     if (!gallery) return;
     gallery.innerHTML = "";
-
+  
     projects.forEach((project) => {
       const figure = document.createElement("figure");
       figure.setAttribute("id", project.id);
@@ -87,26 +89,42 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 });
 
+ // Fonction pour récupérer et afficher les catégories dynamiquement
+
+ function fetchCategories(projects) {
+  fetch("http://localhost:5678/api/categories")
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+      return response.json();
+    })
+    .then((categories) => {
+      generateCategoriesMenu(categories, projects);
+      populateCategoryOptions(categories);
+    })
+    .catch((error) => {
+      console.error("There was a problem with the fetch operation:", error);
+    });
+}
+
+
+
     // Fonction pour générer le menu des catégories
 
-    function generateCategoriesMenu(projects) {
+    function generateCategoriesMenu(categories, projects) {
       const categoriesMenu = document.getElementById("categories-menu");
       if (!categoriesMenu) return;
       categoriesMenu.innerHTML = "";
   
-      const categories = [
-        "Tous",
-        "Objets",
-        "Appartements",
-        "Hotels & restaurants",
-      ];
+      const allCategories = [{ id: 0, name: "Tous" }, ...categories];
   
-      categories.forEach((category) => {
+      allCategories.forEach((category) => {
         const button = document.createElement("button");
-        button.textContent = category;
+        button.textContent = category.name;
         button.dataset.id = category.id;
         button.addEventListener("click", () => {
-          filterProjects(category, projects);
+          filterProjects(category.name, projects);
           setActiveCategory(button);
         });
         categoriesMenu.appendChild(button);
@@ -120,8 +138,8 @@ document.addEventListener("DOMContentLoaded", () => {
   
     // Fonction pour filtrer les projets par catégorie
   
-    function filterProjects(category, projects) {
-      if (category === "Tous") {
+    function filterProjects(categoryName, projects) {
+      if (categoryName === "Tous") {
         displayProjects(projects);
       } else {
         const filteredProjects = projects.filter(
@@ -140,6 +158,20 @@ document.addEventListener("DOMContentLoaded", () => {
       });
       activeButton.classList.add("active");
     }
+
+     // Fonction pour remplir les options de catégorie dans le formulaire d'ajout
+  function populateCategoryOptions(categories) {
+    const photoCategory = document.getElementById("photo-category");
+    if (!photoCategory) return;
+    photoCategory.innerHTML = "";
+
+    categories.forEach((category) => {
+      const option = document.createElement("option");
+      option.value = category.id;
+      option.textContent = category.name;
+      photoCategory.appendChild(option);
+    });
+  }
   
     fetchProjects();
   });
@@ -279,32 +311,32 @@ document.addEventListener("DOMContentLoaded", function () {
           .catch((error) => {
               console.error("Erreur lors du chargement des images :", error);
           });
-  }
-
+  }  
+  
   function deleteProject(projectId) {
     const confirmDelete = confirm("Êtes-vous sûr de vouloir supprimer ce projet ?");
     if (confirmDelete) {
-      fetch(`http://localhost:5678/api/works/{id}`, {
-        method: "DELETE",
-        headers: {
-          Authorization: "Bearer " + authToken,
-        },
-      })
-        .then((response) => {
-          if (response.ok) {
-            const imageContainer = document.getElementById(projectId);
-            if (imageContainer) {
-              imageContainer.remove();
+          fetch('http://localhost:5678/api/works/${projectId}', {
+            method: "DELETE",
+            headers: {
+              Authorization: "Bearer " + authToken,
+            },
+          })
+          .then((response) => {
+            if (response.ok) {
+              const imageContainer = document.getElementById(projectId);
+              if (imageContainer) {
+                imageContainer.remove();
+              }
+            } else {
+              console.error("Erreur lors de la suppression du projet");
             }
-          } else {
-            console.error("Erreur lors de la suppression du projet");
-          }
-        })
-        .catch((error) => {
-          console.error("Erreur lors de la suppression du projet :", error);
-        });
-    }
-  }
+          })
+          .catch((error) => {
+            console.error("Erreur lors de la suppression du projet :", error);
+          });
+        }
+      }
 
     //Modale d'ajout
 
@@ -481,11 +513,14 @@ console.log();
         alert("Photo ajoutée avec succès.");
         document.querySelector(".modal").classList.add("hidden");
         loadGalleryImages();
+        fetchProjects();
       })
       .catch((error) => {
         console.error("Erreur lors de l'envoi de la demande :", error);
       });
   });
+
+fetchCategories();
 
   function loadGalleryImages() {
     fetch("http://localhost:5678/api/works")
@@ -499,21 +534,12 @@ console.log();
       });
   }
 
-      // Changer le code ici pour faire fonctionner le bouton
-
       backButton.addEventListener("click", function () {
         modalContainer.innerHTML = "";
         createSuppressionModal();
       });
     }
 
+    fetchProjects();
 
 });
-
-  
-
-
-
-    
-
-
