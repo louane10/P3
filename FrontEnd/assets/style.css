@@ -390,7 +390,8 @@ footer nav ul {
     flex-wrap: wrap;
     gap: 10px;
     margin: 20px auto 0;
-    width: 450px;
+    width: 550px;
+    height: 400px;
     overflow-y: auto;
 	padding: 40px;
 }
@@ -555,7 +556,7 @@ footer nav ul {
 }
 
 #photo-category {
-    width: 442px;
+    width: 445px;
     height: 60px;
     box-shadow: 3px 3px 10px #dddddd;
     border: none;
@@ -566,7 +567,7 @@ footer nav ul {
 }
 
 .add-photo-form hr {
-    width: 420px;
+    width: 445px;
     margin: 30px;
 }
 
