@@ -146,7 +146,6 @@ function setActiveCategory(activeButton) {
 function populateCategoryOptions(categories) {
 	const photoCategory = document.getElementById("photo-category");
 	if (!photoCategory) return;
-	photoCategory.innerHTML = "";
 
 	categories.forEach((category) => {
 		const option = document.createElement("option");
@@ -197,7 +196,6 @@ document.addEventListener("DOMContentLoaded", function () {
 	});
 
 	window.addEventListener("click", function (event) {
-    console.log(event.target.classList.value);
 		if (event.target.classList.value === "modal") {
 			this.document.querySelector(".modal").remove();
     }
@@ -352,7 +350,7 @@ document.addEventListener("DOMContentLoaded", function () {
 		const title = document.createElement("h2");
 		title.textContent = "Ajout Photo";
 
-		const addPhotoForm = document.createElement("div");
+		const addPhotoForm = document.createElement("form");
 		addPhotoForm.classList.add("add-photo-form");
 
 		const photoUploadContainer = document.createElement("div");
@@ -397,6 +395,10 @@ document.addEventListener("DOMContentLoaded", function () {
 		const photoCategory = document.createElement("select");
 		photoCategory.setAttribute("id", "photo-category");
 
+    const option = document.createElement("option");
+    option.textContent = " ";
+    photoCategory.appendChild(option);
+
 		fetch("http://localhost:5678/api/categories")
 			.then((response) => {
 				if (!response.ok) {
@@ -432,10 +434,12 @@ document.addEventListener("DOMContentLoaded", function () {
 
 		//Affichage de l'image dans fileinput
 
-		document.getElementById("upload-photo-button").addEventListener("click", function () {
+		document.getElementById("upload-photo-button").addEventListener("click", function (event) {
+      event.preventDefault();
 			document.getElementById("file-input").click();
 		});
 		document.getElementById("file-input").addEventListener("change", function (event) {
+      event.preventDefault();
 			const file = event.target.files[0];
 			if (file) {
 				const reader = new FileReader();
@@ -450,17 +454,29 @@ document.addEventListener("DOMContentLoaded", function () {
 				reader.readAsDataURL(file);
 			}
 		});
+  
 
-		// Essai incomplet de l'envoi du projet à l'API
+    // Changer la couleur du bouton
+
+    addPhotoForm.addEventListener("change", () => {
+      console.log("Le formulaire a changé");
+       if (fileInput.files[0] && photoTitle.value && photoCategory.value) {
+       document.getElementById("submit-photo-button").style.backgroundColor = 
+       "#1d6154";
+      } else {
+        document.getElementById("submit-photo-button").style.backgroundColor = 
+       "#A7A7A7";
+      }
+    });
+
+
+		// L'envoi du projet à l'API
 
 		document.getElementById("submit-photo-button");
 		submitPhotoButton.addEventListener("click", (event) => {
 			event.preventDefault();
 
-			if (!fileInput || !fileInput.files || !fileInput.files[0] || !photoTitle || !photoCategory) {
-				alert("Veuillez remplir tous les champs et sélectionner une image.");
-				return;
-			}
+     
 
 			const formData = new FormData();
 			formData.append("image", fileInput.files[0]);
